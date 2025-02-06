@@ -38,7 +38,23 @@ def add_contact():
     
     return redirect(url_for('index'))
 
+@app.route('/update/<int:id>', methods=['POST'])
+def update_contact(id):
+    contact = Contact.query.get(id)
+    if contact:
+        contact.name = request.form['name']
+        contact.email = request.form['email']
+        contact.phone = request.form['phone']
+        db.session.commit()
+    return redirect(url_for('index'))
 
+@app.route('/delete<int:id>', methods=['POST'])
+def delete_contact(id):
+    contact = Contact.query.get(id)
+    if contact:
+        db.session.delete(contact)
+        db.session.commit()
+    return redirect(url_for('index'))
  
 if __name__ == '__main__':
     app.run(debug=True)
